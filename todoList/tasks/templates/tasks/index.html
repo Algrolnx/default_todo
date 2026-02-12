@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My FocusList</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FocusList</h1>
+            <p>Today: <span id="date"></span></p>
+        </header>
+
+        <section class="input-section">
+            <form action="" method="POST">
+                <input type="text" placeholder="What important task will we do?" required>
+                <select name="priority">
+                    <option value="low">Low energy</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <button type="submit">+</button>
+            </form>
+        </section>
+
+        <main class="todo-list">
+            <div class="task-card high">
+                <div class="task-info">
+                    <input type="checkbox" id="task1">
+                    <label for="task1">Learn Django architecture</label>
+                </div>
+            </div>
+
+            <div class="task-card medium">
+                <div class="task-info">
+                    <input type="checkbox" id="task2">
+                    <label for="task2">Make a commit to GitHub</label>
+                </div>
+            </div>
+
+            <div class="task-card completed">
+                <div class="task-info">
+                    <input type="checkbox" checked id="task3">
+                    <label for="task3">Drink coffee</label>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

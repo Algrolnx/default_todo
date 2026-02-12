@@ -1,0 +1,73 @@
+:root {
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --primary: #6c5ce7;
+    --text: #2d3436;
+    --high: #ff7675;
+    --medium: #fdcb6e;
+    --low: #55efc4;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+header h1 {
+    margin-bottom: 5px;
+    color: var(--primary);
+}
+
+.input-section form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+input[type="text"] {
+    flex: 2;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+}
+
+select, button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+    width: 45px;
+}
+
+.task-card {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.task-card:hover { transform: translateY(-2px); }
+
+.task-info { display: flex; align-items: center; gap: 10px; }
