@@ -40,3 +40,22 @@ class Task(models.Model):
     
     class Meta:
         ordering = ['complete', '-created_at']
+
+
+class TaskHistory(models.Model):
+    ACTION_CHOICES = [
+        ('created', 'Created'),
+        ('completed', 'Completed'),
+        ('uncompleted', 'Uncompleted'),
+        ('deleted', 'Deleted'),
+    ]
+
+    task_title = models.CharField(max_length=200)
+    action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.action}: {self.task_title}"
+
+    class Meta:
+        ordering = ['-timestamp']

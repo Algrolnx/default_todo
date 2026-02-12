@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Task
+from .models import Task, TaskHistory
+
 
 def index(request):
     if request.method == 'POST':
@@ -13,6 +14,7 @@ def index(request):
                 priority=priority,
                 category=category
             )
+            TaskHistory.objects.create(task_title=title, action='created')
         return redirect('tasks:index')
 
     tasks = Task.objects.all()
@@ -35,11 +37,21 @@ def index(request):
 
 def del_task(request, pk):
     task = Task.objects.get(id=pk)
+    TaskHistory.objects.create(task_title=task.title, action='deleted')
     task.delete()
     return redirect('tasks:index')
+
 
 def toggle_task(request, pk):
     task = Task.objects.get(id=pk)
     task.complete = not task.complete
     task.save()
+
+    action = 'completed' if task.complete else 'uncompleted'
+    TaskHistory.objects.create(task_title=task.title, action=action)
     return redirect('tasks:index')
+
+
+def history(request):
+    entries = TaskHistory.objects.all()[:50]
+    return render(request, 'tasks/history.html', {'entries': entries})
