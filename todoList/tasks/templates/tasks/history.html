@@ -27,7 +27,7 @@
                     <span class="history-action">{{ entry.get_action_display }}</span>
                     <span class="history-title">{{ entry.task_title }}</span>
                 </div>
-                <span class="history-time">{{ entry.timestamp|date:"M d, H:i" }}</span>
+                <span class="history-time">{{ entry.timestamp|date:"d.m.Y H:i" }}</span>
             </div>
             {% empty %}
             <div class="empty-state">
