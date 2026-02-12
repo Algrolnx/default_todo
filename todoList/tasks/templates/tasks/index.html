@@ -1,52 +1,91 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My FocusList</title>
-    <link rel="stylesheet" href="style.css">
+    <title>FocusList</title>
+    <meta name="description" content="A minimal productivity app to manage your daily tasks and stay focused.">
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
+    <div class="app-container">
+
         <header>
-            <h1>FocusList</h1>
-            <p>Today: <span id="date"></span></p>
+            <div class="logo">
+                <h1>FocusList</h1>
+            </div>
         </header>
 
+        <section class="stats-section">
+            <div class="stats-card">
+                <div class="stats-info">
+                    <span class="stats-label">Progress</span>
+                    <span class="stats-value">{{ progress }}%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: {{ progress }}%;"></div>
+                </div>
+                <p class="stats-subtext">{{ completed_tasks }} of {{ total_tasks }} tasks done</p>
+            </div>
+        </section>
+
         <section class="input-section">
-            <form action="" method="POST">
-                <input type="text" placeholder="What important task will we do?" required>
-                <select name="priority">
-                    <option value="low">Low energy</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                </select>
-                <button type="submit">+</button>
+            <form action="{% url 'tasks:index' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="title" placeholder="What needs to be done?" required autocomplete="off">
+
+                    <select name="category" class="category-select">
+                        <option value="personal">Personal</option>
+                        <option value="work">Work</option>
+                        <option value="study">Study</option>
+                        <option value="health">Health</option>
+                        <option value="finance">Finance</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <select name="priority" class="priority-select">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+
+                    <button type="submit" class="add-btn">+</button>
+                </div>
             </form>
         </section>
 
         <main class="todo-list">
-            <div class="task-card high">
-                <div class="task-info">
-                    <input type="checkbox" id="task1">
-                    <label for="task1">Learn Django architecture</label>
+            {% for task in tasks %}
+            <div class="task-card {{ task.priority }} {% if task.complete %}completed-task{% endif %}"
+                data-category="{{ task.category }}">
+                <div class="task-left">
+                    <a href="{% url 'tasks:toggle_task' task.id %}"
+                        class="check-circle {% if task.complete %}checked{% endif %}">
+                        {% if task.complete %}&#10003;{% endif %}
+                    </a>
+                    <div class="task-content">
+                        <span class="task-title">{{ task.title }}</span>
+                        <div class="task-meta">
+                            <span class="badge badge-{{ task.category }}">{{ task.get_category_display }}</span>
+                            <span class="date">{{ task.created_at|date:"M d" }}</span>
+                        </div>
+                    </div>
                 </div>
+                <a href="{% url 'tasks:del_task' task.id %}" class="delete-btn" aria-label="Delete task">x</a>
             </div>
-
-            <div class="task-card medium">
-                <div class="task-info">
-                    <input type="checkbox" id="task2">
-                    <label for="task2">Make a commit to GitHub</label>
-                </div>
+            {% empty %}
+            <div class="empty-state">
+                <p>No tasks yet. Add one to get started!</p>
             </div>
-
-            <div class="task-card completed">
-                <div class="task-info">
-                    <input type="checkbox" checked id="task3">
-                    <label for="task3">Drink coffee</label>
-                </div>
-            </div>
+            {% endfor %}
         </main>
+
     </div>
 </body>
+
 </html>
