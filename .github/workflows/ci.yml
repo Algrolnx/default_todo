@@ -26,6 +26,9 @@ jobs:
     - name: Run Linter (Flake8)
       run: docker compose run --rm web flake8 . --extend-ignore=E501
 
+    - name: Run Tests
+      run: docker compose run --rm web pytest
+
     - name: Shutdown Infrastructure
       if: always()
       run: docker compose down -v
