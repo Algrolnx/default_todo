@@ -1,34 +1,31 @@
-name: Django CI
+name: Django CI/CD with Docker Compose
 
 on:
   push:
-    branches: [ "main" ] 
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-jobs: 
+jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
+    - name: Setup and Build Infrastructure
+      run: docker compose up -d --build
 
-      - name: Install dependencies
-        working-directory: ./todoList
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Wait for database to be ready
+      run: sleep 10
 
-      - name: Run Migrations
-        working-directory: ./todoList
-        run: python manage.py migrate
+    - name: Check running containers
+      run: docker compose ps
 
-      - name: Test Docker Build
-        run: docker build -t default_todo_app .
-  
+    - name: Run Linter (Flake8)
+      run: docker compose run --rm web flake8 . --extend-ignore=E501
+
+    - name: Shutdown Infrastructure
+      if: always()
+      run: docker compose down -v
