@@ -58,5 +58,4 @@ class TaskHistory(models.Model):
         return f"{self.action}: {self.task_title}"
 
     class Meta:
-        ordering = ['-timestamp']
-
+        ordering = ['-timestamp']
