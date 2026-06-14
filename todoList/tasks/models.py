@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Task(models.Model):
 
     category_choices = [
@@ -33,11 +34,10 @@ class Task(models.Model):
         default='personal',
         verbose_name='Category'
     )
-    
 
     def __str__(self):
         return self.title
-    
+
     class Meta:
         ordering = ['complete', '-created_at']
 
@@ -59,3 +59,4 @@ class TaskHistory(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
