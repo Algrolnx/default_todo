@@ -1,11 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
 
 app_name = 'tasks'
 
+router = DefaultRouter()
+router.register(r'tasks', views.TaskViewSet, basename='task')
+router.register(r'history', views.TaskHistoryViewSet, basename='history')
+
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('delete/<int:pk>/', views.del_task, name='del_task'),
-    path('toggle/<int:pk>/', views.toggle_task, name='toggle_task'),
-    path('history/', views.history, name='history'),
-]
+    path('', include(router.urls)),
+]
